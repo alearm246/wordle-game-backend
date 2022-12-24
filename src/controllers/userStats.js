@@ -7,15 +7,11 @@ const updateUserStats = async (req, res) => {
         const validatedBody = {
             total_games_played: req.body.totalGamesPlayed,
             total_wins: req.body.totalWins,
-            total_losses: req.body.totaLosses,
+            total_losses: req.body.totalLosses,
             current_streak: req.body.currentStreak,
             max_streak: req.body.maxStreak,
             total_time_played: req.body.totalTimePlayed
         }
-        const columnsToGet = ['id', 'total_games_played as totalGamesPlayed',
-        'total_wins as totalWins', 'total_losses as totalLosses',
-        'current_streak as currentStreak', 'max_streak as maxStreak',
-        'total_time_played as totalTimePlayed'];
         if(!(await userStats.findOne({id: req.params.id}))) return res.stats(404).send("user stats with that id not found");
         const updatedUser = await userStats.update(req.params.id, validatedBody);
         res.status(200).send(updatedUser);
@@ -33,7 +29,6 @@ const incrementStats = async (req, res) => {
             totalWins, 
             totalLosses, 
             currentStreak, 
-            maxStreak, 
             totalTimePlayed} = req.body
     const columnsToGet = ['id', 'total_games_played as totalGamesPlayed',
         'total_wins as totalWins', 'total_losses as totalLosses',
@@ -46,15 +41,8 @@ const incrementStats = async (req, res) => {
     const newTotalWins = currentUserStats.totalWins + totalWins;
     const newTotalLosses = currentUserStats.totalLosses + totalLosses;
     const newCurrentStreak = currentUserStats.currentStreak + currentStreak;
-    const newMaxStreak = currentUserStats.maxStreak + maxStreak;
     const newTotalTimePlayed = currentUserStats.totalTimePlayed + totalTimePlayed;
-
-    console.log(newTotalGamesPlayed);
-    console.log(newTotalWins);
-    console.log(newTotalLosses);
-    console.log(newCurrentStreak);
-    console.log(newMaxStreak);
-    console.log(newTotalTimePlayed);
+    const newMaxStreak = newCurrentStreak > currentUserStats.maxStreak ? newCurrentStreak : currentUserStats.maxStreak;
 
     const updatedUserStats = await userStats.update(id, {
         total_games_played: newTotalGamesPlayed,

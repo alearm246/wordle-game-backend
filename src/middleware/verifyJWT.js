@@ -13,8 +13,6 @@ const verifyJwt = async (req, res, next) => {
       res.status(404).send(`There was a problem trying to verify the jwt: ${err}`)
     }
     const currentUser = await user.joinAndFindOneByUserId(jwtUser.id);
-    console.log("current usersssss: ", currentUser);
-
     req.user = {
       id: currentUser.userId,
       userStatsId: currentUser.userStatsId,
@@ -27,7 +25,6 @@ const verifyJwt = async (req, res, next) => {
       maxStreak: currentUser.maxStreak,
       totalTimePlayed: currentUser.totalTimePlayed
     };
-
     next();
   })
 };

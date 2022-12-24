@@ -21,7 +21,7 @@ class UserStat {
         const [updatedUser] = await knex("users_stats").where({id}).update(userStatsField, [
             'total_wins as totalWins', 'total_losses as totalLosses',
             'current_streak as currentStreak', 'max_streak as maxStreak',
-            'total_time_played as totalTimePlayed'
+            'total_time_played as totalTimePlayed', 'total_games_played as totalGamesPlayed'
         ])
         return updatedUser;
     }
